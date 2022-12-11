@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
                     except type(float):
                         try:
                             value = float(value)
-                        except:
+                        except not float:
                             continue
                 dic[key] = value
         return dic
@@ -146,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
                 k, v = param.split('=')
                 try:
                     attribute = HBNBCommand.verify_attribute(v)
-                except:
+                except not attribute:
                     continue
                 if not attribute:
                     continue
