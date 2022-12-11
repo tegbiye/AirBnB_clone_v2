@@ -2,14 +2,15 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
-from slalchemy.orm relationship
+from sqlalchemy.orm import relationship
 
 place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', Strin(60), ForeignKey('places.id'),
+                      Column('place_id', String(60), ForeignKey('places.id'),
                               primary_key=True, nullable=False),
                       Column('amenity_id', String(60), ForeignKey('amenities.id'),
                               primary_key=True, nullable=False)
                       )
+
 
 class Place(BaseModel):
     """ A place to stay """
@@ -25,9 +26,10 @@ class Place(BaseModel):
     latitude = Column(Float)
     longitude = Column(Float)
     reviews = relationship("Review", backref='place', cascade="all, delete")
-    amenities = relationship("Amenity", secondary=place_amenity, viewonly=False)
+    amenities = relationship(
+        "Amenity", secondary=place_amenity, viewonly=False)
 
-   @property
+    @property
     def reviews(self):
         """Getter attribute reviews that returns the list of Review instances
         with place_id equals to the current Place.id
