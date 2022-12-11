@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel
-from sqlalchemy import Column, String, Integer, BateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from models.city import City
 import os
