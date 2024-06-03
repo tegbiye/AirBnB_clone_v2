@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the file storage class for AirBnB"""
-
 import json
+import sys
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -20,7 +20,6 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
-    __filtered = {}
 
     def all(self, cls=None):
         """returns a dictionary
@@ -29,17 +28,17 @@ class FileStorage:
         """
         if cls is None:
             return self.__objects
-        elif cls is not None:
-            #  keep running into string error
-            if type(cls) == str:
-                cls = eval(cls)
-
-            for k, v in self.__objects.items():
-
-                if type(v) == cls:
-                    self.__filtered[k] = v
-
-            return self.__filtered
+        else:
+            new_dict = {}
+            if len(self.__objects) > 0:
+                for key, value in self.__objects.items():
+                    if type(cls) is str:
+                        if cls == key.split('.')[0]:
+                            new_dict[key] = value
+                    else:
+                        if cls is type(value):
+                            new_dict[key] = value
+            return new_dict
 
     def new(self, obj):
         """sets __object to given obj
@@ -71,13 +70,17 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """Delete obj from __objects if it’s inside
+        """Deletes obj from __objecs if its inside
+        Not sure if it should also delete from json file
         """
-        try:
-            del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
-        except:
-            pass
+
+        dict_key = ""
+        for key, value in self.__objects.items():
+            if obj == value:
+                dict_key = key
+        if dict_key is not "":
+            del self.__objects[dict_key]
 
     def close(self):
-        """method for deserializing the JSON file to objects"""
-        self.__objects = self.reload()
+        """ calls reload() for deserializing the JSON file to objects."""
+        self.reload()
